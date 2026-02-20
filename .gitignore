@@ -39,3 +39,5 @@ dist/
 # Data files (keep Housing.csv but ignore others)
 *.csv
 !Housing.csv
+
+actions-runner/
