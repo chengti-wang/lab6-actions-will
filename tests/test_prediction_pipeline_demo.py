@@ -1,3 +1,4 @@
+import runpy
 import pytest
 import pandas as pd
 import numpy as np
@@ -55,21 +56,23 @@ def feature_target_sample(housing_data_sample):
     return (feature_df, target_series)
 
 def test_data_split_returns_four_parts(feature_target_sample):
-    # TODO(1): Uncomment the line below to get the split
-    # parts = data_split(*feature_target_sample)
-    # TODO(2): Add assertions to check:
-    #   - parts is a tuple
-    #   - tuple has exactly 4 elements
-    pass
+    parts = data_split(*feature_target_sample)
+    assert isinstance(parts, tuple)
+    assert len(parts) == 4
+    X_train, X_test, y_train, y_test = parts
+    assert len(X_train) + len(X_test) == len(feature_target_sample[0])
+    assert len(y_train) + len(y_test) == len(feature_target_sample[1])
 
 
 def test_end_to_end_train_and_eval(feature_target_sample):
-    # TODO(3): Uncomment these lines to train and evaluate the model
-    # X_train, X_test, y_train, y_test = data_split(*feature_target_sample)
-    # model = train_model(X_train, y_train)
-    # score = eval_model(X_test, y_test, model)
-    # TODO(4): Add assertions to check:
-    #   - score is a float
-    #   - score is finite (not NaN or inf)
-    pass
-    
+    X_train, X_test, y_train, y_test = data_split(*feature_target_sample)
+    model = train_model(X_train, y_train)
+    score = eval_model(X_test, y_test, model)
+    assert isinstance(score, float)
+    assert np.isfinite(score)
+
+
+def test_main_runs_without_error():
+    """Cover the if __name__ == '__main__' block by running the module as main."""
+    runpy.run_module("prediction_pipeline_demo", run_name="__main__")
+ 
